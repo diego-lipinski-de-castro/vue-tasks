@@ -12,10 +12,7 @@
         props: ['task'],
         methods: {
             updateStatus() {
-                // this.$firestore.collection('tasks').doc(this.task.id).update({
-                //     done: !this.task.done
-                // })
-                this.$database.ref(`tasks/${this.task.id}`).update({
+                this.$firestore.collection('tasks').doc(this.task.id).update({
                     done: !this.task.done
                 })
             }

@@ -21,7 +21,6 @@ Vue.prototype.$utils = utils
 
 Vue.prototype.$auth = firebase.auth
 Vue.prototype.$firestore = firebase.firestore
-Vue.prototype.$database = firebase.database
 
 new Vue({
   name: 'root',

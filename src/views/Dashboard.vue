@@ -32,6 +32,8 @@
         },
         methods: {
             async getTabs() {
+                const trace = this.$performance.trace('getTabsTrace');
+                trace.start()
                 await this.$firestore.collection('tabs').where('user', '==', this.user).orderBy('createdAt', 'asc')
                     .onSnapshot(snapshot => {
                         this.tabs = snapshot.docs.map(doc => {
@@ -41,13 +43,16 @@
                             }
                         })
                     })
+                trace.stop()
+                trace.incrementMetric('numberOfUserTabs', this.tabs.length);
             },
             async addTab() {
                 await this.$firestore.collection('tabs').add({
                     user: this.user,
                     title: `Tab ${this.tabs.length + 1}`,
                     color: '#009fff',
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
+                    taskCount: 0
                 })
             }
         },

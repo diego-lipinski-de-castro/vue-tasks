@@ -4,38 +4,55 @@ const app = express();
 const port = 3000;
 
 const admin = require('firebase-admin');
-const serviceAccount1 = require('./vue-kanban-6da52-firebase-adminsdk-1zmxa-5d6b414a1a.json');
-const serviceAccount2 = require('./vue-kanban-2-firebase-adminsdk-z4oz7-d1e1740e59.json');
+const serviceAccount = require('./vue-kanban-6da52-firebase-adminsdk-1zmxa-5d6b414a1a.json');
 
-const app1 = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount1),
+const fireApp = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://vue-kanban-6da52.firebaseio.com'
-}, 'app1');
+}, 'app');
 
-const app2 = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount2),
-    databaseURL: 'https://vue-kanban-2.firebaseio.com'
-}, 'app2');
-
-app.listen(port, function () {
+app.listen(port, () => {
     console.log('listening on ' + port);
 });
 
 app.get('/hi', (req, res) => {
     res.send('hi');
+    
+    fireApp.database().ref('ips').push({ ip: req.headers['x-forwarded-for'] });
 });
 
-app.get('/replicate', (req, res) => {
-    res.send('replicated');
+exports.app = functions.https.onRequest(app);
+
+exports.incrementTaskCount = functions.firestore.document('tasks/{taskId}').onCreate(async (snapshot, context) => {
+
+    const tabRef = snapshot.ref.parent.parent.collection('tabs').doc(snapshot.data().tab)   
+
+    fireApp.firestore().runTransaction(async t => {
+        return t.get(tabRef)
+            .then(doc => {
+                let newTaskCount = doc.data().taskCount + 1
+                t.update(tabRef, { taskCount: newTaskCount })
+
+                return Promise.resolve('Tasks increased to ' + newTaskCount);
+            })
+    })
+
+    return null;
 });
 
-// exports.app = functions.https.onRequest(app);
+exports.decrementTaskCount = functions.firestore.document('tasks/{taskId}').onDelete(async (snapshot, context) => {
 
-// exports.replicate = functions.firestore.document('tasks/{taskId}').onWrite((change, context) => {
-//     console.log('change', change)
-//     console.log('context', context)
-// })
+    const tabRef = snapshot.ref.parent.parent.collection('tabs').doc(snapshot.data().tab)   
 
-// exports.replicate = functions.database.ref().onWrite((change, context) => {
-//     console.log(change, context)
-// });
+    fireApp.firestore().runTransaction(async t => {
+        return t.get(tabRef)
+            .then(doc => {
+                let newTaskCount = doc.data().taskCount -1
+                t.update(tabRef, { taskCount: newTaskCount })
+
+                return Promise.resolve('Tasks decreased to ' + newTaskCount);
+            })
+    })
+
+    return null;
+});

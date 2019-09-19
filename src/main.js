@@ -21,6 +21,7 @@ Vue.prototype.$utils = utils
 
 Vue.prototype.$auth = firebase.auth
 Vue.prototype.$firestore = firebase.firestore
+Vue.prototype.$performance = firebase.performance
 
 new Vue({
   name: 'root',

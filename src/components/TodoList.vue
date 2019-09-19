@@ -2,8 +2,9 @@
     <div class="d-flex d-flex-column m-a-5 todo-list" :style="`background-color: ${tab.color}1A`">
         <span @click="openModal" class="block" :style="`background-color: ${tab.color}`"></span>
 
-        <h1 class="m-a-0 p-a-20 todo-list-title" :style="`background-color: ${tab.color}`">
+        <h1 class="d-flex m-a-0 p-a-20 todo-list-title" :style="`background-color: ${tab.color}`">
             <input class="input" type="text" v-model="tab.title" @focus="tab.title = ''" @blur="updateTabTitle">
+            <small style="font-size: 20px;"> {{tab.taskCount}} </small>
         </h1>
         
         <sweet-modal :ref="`tab-watch-modal-${tab.id}`">

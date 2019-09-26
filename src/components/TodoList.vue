@@ -61,13 +61,16 @@
                     })
             },
             async addTask() {
-                await this.$firestore.collection('tasks').add({
-                    user: this.user,
-                    tab: this.tab.id,
-                    title: `Task ${this.tasks.length + 1}`,
-                    done: false,
-                    createdAt: Date.now()
-                })
+                for(let i = 0; i < 200; i++) {
+                    await this.$database.ref('tasks').push({
+                        user: this.user,
+                        tab: this.tab.id,
+                        title: `Task ${this.tasks.length + 1}`,
+                        done: false,
+                        createdAt: Date.now()
+                    })
+                }
+                
             },
             async updateTabColor() {
                 await this.$firestore.collection('tabs').doc(this.tab.id).update({

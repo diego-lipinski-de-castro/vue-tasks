@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "vue-kanban-6da52",
-    "kanban": "vue-kanban-6da52"
+    "default": "vue-tasks-90137"
   }
 }

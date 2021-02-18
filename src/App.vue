@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <loading-overlay :loading.sync="loading"></loading-overlay>
+    <!-- <loading-overlay :loading.sync="loading"></loading-overlay> -->
 
     <button v-if="!user" class="login-button p-a-20 w-100" @click="login"> Entrar </button>
 

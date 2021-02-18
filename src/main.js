@@ -13,8 +13,8 @@ Vue.config.productionTip = true
 import { sync } from 'vuex-router-sync'
 sync(store, router, { moduleName: 'router' })
 
-import LoadingOverlayPlugin from './packages/vue-loading-overlay'
-Vue.use(LoadingOverlayPlugin)
+// import LoadingOverlayPlugin from './packages/vue-loading-overlay'
+// Vue.use(LoadingOverlayPlugin)
 
 import * as utils from './utils/index'
 Vue.prototype.$utils = utils

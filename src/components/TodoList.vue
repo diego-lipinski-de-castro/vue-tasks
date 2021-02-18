@@ -7,9 +7,9 @@
             <small style="font-size: 20px;"> {{tab.taskCount}} </small>
         </h1>
         
-        <sweet-modal :ref="`tab-watch-modal-${tab.id}`">
+        <!-- <sweet-modal :ref="`tab-watch-modal-${tab.id}`">
             <swatches v-model="tab.color" colors="basic" inline @input="updateTabColor"></swatches>    
-        </sweet-modal>
+        </sweet-modal> -->
 
         <button class="add-button p-a-10 m-b-20" :style="`background-color: ${tab.color}`" @click="addTask"> adicionar tarefa </button>
         
@@ -22,9 +22,9 @@
 
 <script>
     import Swatches from 'vue-swatches'
-    import "vue-swatches/dist/vue-swatches.min.css"
+    import "vue-swatches/dist/vue-swatches.css"
 
-    import { SweetModal } from 'sweet-modal-vue'
+    // import { SweetModal } from 'sweet-modal-vue'
 
     import { mapGetters } from 'vuex'
 
@@ -34,7 +34,7 @@
         name: 'TodoList',
         components: {
             Swatches,
-            SweetModal,
+            // SweetModal,
             TodoListItem
         },
         props: ['tab'],
@@ -87,7 +87,7 @@
                 })
             },
             openModal() {
-                this.$refs[`tab-watch-modal-${this.tab.id}`].open()
+                // this.$refs[`tab-watch-modal-${this.tab.id}`].open()
             }
         },
         mounted() {

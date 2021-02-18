@@ -1,66 +1,10 @@
 const functions = require('firebase-functions');
-const mysql = require('mysql');
-const express = require('express');
-const app = express();
-const port = 3000;
-
 const admin = require('firebase-admin');
-const serviceAccount = require('./vue-kanban-6da52-firebase-adminsdk-1zmxa-5d6b414a1a.json');
+const serviceAccount = require('./vue-tasks-90137-firebase-adminsdk-onpnj-18d48db625.json');
 
 const fireApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://vue-kanban-6da52.firebaseio.com'
-}, 'app');
-
-const connectionName = 'vue-kanban-6da52:us-central1:teste';
-const dbUser = 'lipinski';
-const dbPassword = 'bunda';
-const dbName = 'teste';
-
-const mysqlConfig = {
-    connectionLimit: 1,
-    user: dbUser,
-    password: dbPassword,
-    database: dbName,
-};
-if (process.env.NODE_ENV === 'production') {
-    mysqlConfig.socketPath = `/cloudsql/${connectionName}`;
-}
-
-mysqlPool = mysql.createPool(mysqlConfig);
-
-app.listen(port, () => {
-    console.log('listening on ' + port);
 });
-
-app.get('/hi', (req, res) => {
-    res.send('hi');
-
-    fireApp.database().ref('ips').push({ ip: req.headers['x-forwarded-for'] });
-});
-
-app.get('/mysql', (req, res) => {
-
-    mysqlPool.query('SELECT * FROM jesus', (err, results) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send(err);
-        } else {
-            res.send(JSON.stringify(results));
-        }
-    });
-
-    // mysqlPool.query('SELECT NOW() AS now', (err, results) => {
-    //     if (err) {
-    //         console.error(err);
-    //         res.status(500).send(err);
-    //     } else {
-    //         res.send(JSON.stringify(results));
-    //     }
-    // });
-});
-
-exports.app = functions.https.onRequest(app);
 
 exports.incrementTaskCount = functions.firestore.document('tasks/{taskId}').onCreate(async (snapshot, context) => {
 

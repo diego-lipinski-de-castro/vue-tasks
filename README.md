@@ -2,7 +2,7 @@
 
 Vue kanban with firebase (task count isnt working due to firebase functions throwing error)
 
-Hosted at: https://vue-tasks-90137.web.app
+[Demo](https://vue-tasks-90137.web.app)
 
 ## Project setup
 ```
